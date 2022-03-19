@@ -7,4 +7,10 @@ public interface IConta {
     void transferir(double valor, IConta contaDestino);
 
     void imprimirExtrato();
+
+    void exibirSaldo();
+
+    void encerrarConta();
+
+    void reativarConta();
 }

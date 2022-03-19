@@ -16,20 +16,42 @@ public abstract class Conta implements IConta, Aplicacao {
         this.cliente = cliente;
     }
 
+    public Conta(int agencia, int numero, double saldo, String cliente) {
+    }
+
     @Override
     public void sacar(double valor) {
-        saldo -= valor;
+        if(this.isEstaAtiva()){
+            saldo -= valor;
+            System.out.println("Saque realizado com sucesso.");
+            System.out.println("______________________________");
+        } else {
+            System.out.println("Impossivel sacar de uma conta fechada.");
+            System.out.println("______________________________");
+        }
     }
 
     @Override
     public void depositar(double valor) {
-        saldo += valor;
+        if (this.isEstaAtiva()){
+            saldo += valor;
+            System.out.println("Deposito realizado com sucesso R$ ");
+            System.out.println("______________________________");
+        } else{
+            System.out.println("Impossivel depositar em uma conta fechada.");
+            System.out.println("______________________________");
+        }
     }
 
     @Override
     public void transferir(double valor, IConta contaDestino) {
-        this.sacar(valor);
-        contaDestino.depositar(valor);
+        if (this.getSaldo() > valor && isEstaAtiva() == true) {
+            this.sacar(valor);
+            contaDestino.depositar(valor);
+        } else{
+            System.out.println("Impossivel tranferir. Valor insuficiente ou a conta está fechada");
+        }
+
     }
 
     public int getAgencia() {
@@ -47,13 +69,57 @@ public abstract class Conta implements IConta, Aplicacao {
     public boolean isEstaAtiva() {
         return estaAtiva;
     }
+    public void setEstaAtiva(boolean s){
+        this.estaAtiva = s;
+    }
 
     protected void imprimirExtratos() {
-        System.out.println(String.format("Titular: %s", this.cliente.getNome()));
-        System.out.println(String.format("Agencia: %d", this.agencia));
-        System.out.println(String.format("Numero: %d", this.numero));
-        System.out.println(String.format("Saldo: %.2f", this.saldo));
-
+        if (this.isEstaAtiva()){
+            System.out.println(String.format("Titular: %s", this.cliente.getNome()));
+            System.out.println(String.format("Agencia: %d", this.agencia));
+            System.out.println(String.format("Numero: %d", this.numero));
+            System.out.println(String.format("Saldo: %.2f", this.saldo));
+            System.out.println("____________________________________");
+        } else{
+            System.out.println("Impossivel imprimir extrato de uma conta fechada.");
+        }
 
     }
+
+    public void exibirSaldo(){
+        if(this.isEstaAtiva()){
+            System.out.println(getSaldo());
+            System.out.println("____________________________________");
+        } else{
+            System.out.println("Não pode exibir saldo de uma conta fechada.");
+            System.out.println("____________________________________");
+        }
+
+    }
+
+    public void abrirConta(){
+        this.setEstaAtiva(true);
+    }
+
+    public void encerrarConta(){
+        if(this.getSaldo() > 0){
+            System.out.println("A conta possui dinheiro, então não pode ser fechada");
+        } else if (this.getSaldo() < 0) {
+            System.out.println("Conta está em débito então não pode ser fechada.");
+        } else{
+            this.setEstaAtiva(false);
+            System.out.println("Conta fechada com sucesso.");
+            System.out.println("____________________________________");
+        }
+    }
+
+    public void reativarConta(){
+        if (this.isEstaAtiva() == false){
+            this.setEstaAtiva(true);
+            System.out.println("Conta reativada com sucesso.");
+            System.out.println("____________________________________");
+        }
+    }
+
+
 }
