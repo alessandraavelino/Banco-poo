@@ -7,6 +7,7 @@ public class Main {
 
         Cliente ale = new Cliente();
         Cliente jao = new Cliente();
+
         ale.setNome("ale");
         jao.setNome("jao");
 

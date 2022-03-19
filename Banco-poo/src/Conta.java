@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 public abstract class Conta implements IConta, Aplicacao {
 
     private static final int AGENCIA_PADRAO = 1;
@@ -8,6 +10,7 @@ public abstract class Conta implements IConta, Aplicacao {
     protected double saldo;
     protected Cliente cliente;
     private boolean estaAtiva;
+    protected List<Historico> lhistorico;
 
 
     public Conta(Cliente cliente) {
@@ -17,6 +20,7 @@ public abstract class Conta implements IConta, Aplicacao {
     }
 
     public Conta(int agencia, int numero, double saldo, String cliente) {
+        this.lhistorico = new ArrayList<>();
     }
 
     @Override
@@ -53,6 +57,7 @@ public abstract class Conta implements IConta, Aplicacao {
         }
 
     }
+    
 
     public int getAgencia() {
         return agencia;
@@ -86,6 +91,14 @@ public abstract class Conta implements IConta, Aplicacao {
 
     }
 
+    public List<Historico> getLHistorico(){
+        return lhistorico;
+    }
+
+    public void setLhistorico(List<Historico> lhistorico){
+        this.lhistorico = lhistorico;
+    }
+
     public void exibirSaldo(){
         if(this.isEstaAtiva()){
             System.out.println(getSaldo());
@@ -112,6 +125,7 @@ public abstract class Conta implements IConta, Aplicacao {
             System.out.println("____________________________________");
         }
     }
+
 
     public void reativarConta(){
         if (this.isEstaAtiva() == false){
